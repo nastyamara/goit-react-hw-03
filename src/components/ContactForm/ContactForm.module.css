@@ -1,0 +1,18 @@
+.formContainer{
+  
+    border: 1px solid navy;
+    border-radius: 10px;
+    width: auto;
+}
+
+.formTitle{
+    display: block;
+}
+
+.formInput {
+    display: block;
+}
+
+.formBtn {
+    display: block;
+}

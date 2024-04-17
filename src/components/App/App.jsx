@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
+import { nanoid } from 'nanoid'
 import ContactList from "../ContactList/ContactList";
 import ContactForm from "../ContactForm/ContactForm";
+import SearchBox from "../SearchBox/SearchBox";
+import css from './App.module.css'
 
 
 function App() {
@@ -18,31 +21,36 @@ function App() {
   ])}
 )
   const removeContact = (contactToRemove) => {
-    // const contactIdx = contacts.findIndex(contact => contact.id === contactToRemove);
-    // contacts.splice(contactIdx, 1)
-    // localStorage.setItem('contactbook', JSON.stringify(contacts))
-    // setContacts(contacts)
     setContacts((oldCont) => { return oldCont.filter((contact) => contact.id !== contactToRemove) })
-   
   }
+
+  const [filter, setFilter] = useState('')
   
 
   useEffect(() => {localStorage.setItem('contactbook', JSON.stringify(contacts))
 
   }, [contacts])
 
-  const onAdd = () => {}
+  const addContact = (newContact) => {
+    console.log(newContact)
+    newContact.id = nanoid()
+    setContacts((prevContacts) => {
+      return [...prevContacts, newContact]
+    })
+  }
 
-    
-  
+  const visibleContacts = contacts.filter((contact)=>contact.name.toLowerCase().includes(filter.toLowerCase()))
+
   return (
-    <>
-      <h1>Phonebook</h1>
-
-      <ContactList propsFromState={contacts} removeContact={removeContact} />
-      <ContactForm  onAdd={onAdd} />
+    <div className={css.container}>
+      <h1 className={css.title}>Phonebook</h1>
+   
+      <ContactForm onAdd={addContact} />
+      <SearchBox value={filter} onChange={ setFilter} />
+      <ContactList propsFromState={visibleContacts} removeContact={removeContact} />
      
-    </>
+     
+    </div>
   )
 }
 
